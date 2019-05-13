@@ -1,3 +1,4 @@
+import Foundation
 import ANSITerminal
 
 // define some special constants for easy typing
@@ -7,7 +8,7 @@ let RETURN = NonPrintableChar.enter.char()
 let BACKSP = NonPrintableChar.erase.char()
 let HTAB   = NonPrintableChar.tab.char()
 let SPACE  = NonPrintableChar.space.char()
-let DELAY  = 10000
+let DELAY  = 1000
 
 func writeBack(_ txt: String, suspend: Int = 0) {
   restoreCursorPosition()
@@ -16,11 +17,19 @@ func writeBack(_ txt: String, suspend: Int = 0) {
   restoreCursorPosition()
 }
 
-// color prompt
+var now = Date()
+let fmt = DateFormatter()
+fmt.dateFormat = "dd-MM-yyyy HH:mm.ss"
+
+// program title
 // clearScreen()
 writeln()
-print(" ANSITerminal Demo ".bold.yellow.onBlue)
-print("–––––––––––––––––––")
+writeln(" ANSITerminal Demo ".bold.yellow.onBlue)
+let clockPos = readCursorPos()
+writeln(fmt.string(from: now).green)
+writeln("–––––––––––––––––––")
+
+// color prompt
 write("Code pressed".yellow+" is ")
 storeCursorPosition()
 
@@ -84,10 +93,20 @@ while true {
 
     clearToEndOfLine()
   }
-  // animating dots while waiting
+  // animating dots and clock while waiting
   else {
+    // clock
+    cursorOff()
+    now = Date()
+    moveTo(clockPos.row, clockPos.col)
+    write(fmt.string(from: now).green)
+    delay(DELAY)
+    cursorOn()
+
+    // pressed char
     writeBack(str, suspend: DELAY)
 
+    // 3 dots animation
     str.count >= 1 ? moveRight() : write("."); delay(DELAY)
     str.count >= 2 ? moveRight() : write("."); delay(DELAY)
     str.count >= 3 ? moveRight() : write("."); delay(DELAY)
