@@ -17,14 +17,15 @@ func writeBack(_ txt: String, suspend: Int = 0) {
 }
 
 // color prompt
-clearScreen()
+// clearScreen()
+writeln()
 print(" ANSITerminal Demo ".bold.yellow.onBlue)
 print("–––––––––––––––––––")
 write("Code pressed".yellow+" is ")
 storeCursorPosition()
 
 moveLineDown(3)
-write("Press any key, "+"ESC".yellow.onBlue+" to quit.")
+write("Press any key, "+"ESC".lightRed+" to quit.")
 
 // waiting for keyboard input
 var str  = ""
@@ -97,10 +98,11 @@ while true {
   if quit {
     setDefault()
     writeln()
+    clearLine()
     break
   }
 }
 
 writeln()
 clearLine()
-print("Thank you!".lightCyan)
+print("Thank you!".lightBlue.bold)
