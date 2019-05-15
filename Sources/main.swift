@@ -8,7 +8,7 @@ let RETURN = NonPrintableChar.enter.char()
 let BACKSP = NonPrintableChar.erase.char()
 let HTAB   = NonPrintableChar.tab.char()
 let SPACE  = NonPrintableChar.space.char()
-let DELAY  = 1000
+let DELAY  = 10
 
 func writeBack(_ txt: String, suspend: Int = 0) {
   restoreCursorPosition()
@@ -22,19 +22,17 @@ let fmt = DateFormatter()
 fmt.dateFormat = "dd-MM-yyyy HH:mm.ss"
 
 // program title
-// clearScreen()
-writeln()
-writeln(" ANSITerminal Demo ".bold.yellow.onBlue)
+writeln()  // clearScreen()
+writeln(" ANSITerminal Demo ".bold.asYellow.onBlue)
 let clockPos = readCursorPos()
-writeln(fmt.string(from: now).green)
+writeln(fmt.string(from: now).asGreen)
 writeln("–––––––––––––––––––")
 
 // color prompt
-write("Code pressed".yellow+" is ")
+write("Code pressed".asYellow+" is ")
 storeCursorPosition()
-
 moveLineDown(3)
-write("Press any key, "+"ESC".lightRed+" to quit.")
+write("Press any key, "+"ESC".asLightRed+" to quit.")
 
 // waiting for keyboard input
 var str  = ""
@@ -76,7 +74,7 @@ while true {
     }
     // make space more visible
     else if chr == SPACE {
-      write(" ".onDarkGray," ")
+      write(" ".onDarkGray," ".onDefault)
     }
     // write some non printable symbols
     else if isNonPrintable(char: chr) {
@@ -99,7 +97,7 @@ while true {
     cursorOff()
     now = Date()
     moveTo(clockPos.row, clockPos.col)
-    write(fmt.string(from: now).green)
+    write(fmt.string(from: now).asGreen)
     delay(DELAY)
     cursorOn()
 
@@ -124,4 +122,4 @@ while true {
 
 writeln()
 clearLine()
-print("Thank you!".lightBlue.bold)
+print("Thank you!".asLightBlue.bold)
